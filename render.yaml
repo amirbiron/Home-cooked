@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: home-cooked
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: RENDER
+        value: "true"
+      - key: VITE_BASE44_APP_ID
+        value: 6952e95e4b944b88f8a51f72
+      - key: VITE_BASE44_APP_BASE_URL
+        value: /api/apps/6952e95e4b944b88f8a51f72
+      - key: VITE_BASE44_SERVER_URL
+        value: https://app.base44.com
+      - key: NODE_VERSION
+        value: "20"
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
