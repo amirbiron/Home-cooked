@@ -114,8 +114,9 @@ export default function Cart() {
   // עמלת פלטפורמה
   const commissionAmount = Math.round(productsTotal * COMMISSION_RATE * 100) / 100;
 
-  // סה"כ כולל משלוח
-  const cartTotal = productsTotal + SHIPPING_COST;
+  // סה"כ כולל משלוח - לכל מוכר יש עלות משלוח נפרדת
+  const totalShippingCost = SHIPPING_COST * carts.length;
+  const cartTotal = productsTotal + totalShippingCost;
 
   const handleSubmitOrder = async () => {
     if (carts.length === 0) return;
@@ -560,9 +561,9 @@ export default function Cart() {
           <div className="flex justify-between items-center text-sm md:text-base text-gray-600">
             <span className="flex items-center gap-1">
               <Truck className="w-4 h-4" />
-              משלוח
+              משלוח {carts.length > 1 ? `(${carts.length} מוכרים × ₪${SHIPPING_COST})` : ''}
             </span>
-            <span>₪{SHIPPING_COST}</span>
+            <span>₪{totalShippingCost}</span>
           </div>
           <div className="flex justify-between items-center text-xs md:text-sm text-gray-400">
             <span>עמלת פלטפורמה (5%)</span>
