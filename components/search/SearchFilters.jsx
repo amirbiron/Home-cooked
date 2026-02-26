@@ -74,7 +74,7 @@ export default function SearchFilters({ filters, onFiltersChange, activeFiltersC
 
       {/* Tags */}
       <div>
-        <Label className="mb-3 block text-base font-semibold text-gray-900">סגנון מטבח</Label>
+        <Label className="mb-3 block text-base font-semibold text-gray-900">קטגוריה</Label>
         <div className="flex flex-wrap gap-2">
           {TAGS.map((tag) => (
             <button
@@ -135,7 +135,7 @@ export default function SearchFilters({ filters, onFiltersChange, activeFiltersC
 
       {/* Tags */}
       <div>
-        <Label className="font-semibold mb-3 block text-gray-900">סגנון מטבח</Label>
+        <Label className="font-semibold mb-3 block text-gray-900">קטגוריה</Label>
         <div className="flex flex-wrap gap-2">
           {TAGS.map((tag) => (
             <button
@@ -170,7 +170,7 @@ export default function SearchFilters({ filters, onFiltersChange, activeFiltersC
           <SheetTrigger asChild>
             <Button variant="outline" className="w-full h-12 gap-2 text-base font-medium border-2">
               <SlidersHorizontal className="w-5 h-5" />
-              סינון מסעדות
+              סינון חנויות
               {activeFiltersCount > 0 && (
                 <Badge className="bg-orange-500 text-white">{activeFiltersCount}</Badge>
               )}

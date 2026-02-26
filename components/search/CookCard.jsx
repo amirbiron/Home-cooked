@@ -26,7 +26,7 @@ export default function CookCard({ cook, dailySpecial }) {
             {dailySpecial && (
               <Badge className="bg-amber-500 text-white text-xs gap-1">
                 <Sparkles className="w-3 h-3" />
-                מנת היום
+                מוצר היום
               </Badge>
             )}
           </div>

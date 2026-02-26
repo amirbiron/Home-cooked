@@ -35,7 +35,7 @@ export default function CookPending() {
 
           <div className="space-y-3">
             <p className="text-sm text-gray-500">
-              בינתיים, תוכלו לגלוש באתר ולראות מה מבשלים אחרים מציעים
+              בינתיים, תוכלו לגלוש באתר ולראות מה מוכרים אחרים מציעים
             </p>
             
             <Button

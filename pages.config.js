@@ -68,6 +68,7 @@ import OrderTracking from './pages/OrderTracking';
 import Search from './pages/Search';
 import Support from './pages/Support';
 import AdminSupport from './pages/AdminSupport';
+import BuyProduct from './pages/BuyProduct';
 import __Layout from './Layout.jsx';
 
 
@@ -93,6 +94,7 @@ export const PAGES = {
     "Search": Search,
     "Support": Support,
     "AdminSupport": AdminSupport,
+    "BuyProduct": BuyProduct,
 }
 
 export const pagesConfig = {

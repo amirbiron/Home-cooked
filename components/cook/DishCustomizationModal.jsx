@@ -103,7 +103,7 @@ export default function DishCustomizationModal({ dish, isOpen, onClose, onAddToC
           {/* Remove Items */}
           {removableItems.length > 0 && (
             <div>
-              <h4 className="font-semibold text-base text-gray-900 mb-3">מה להוריד מהמנה?</h4>
+              <h4 className="font-semibold text-base text-gray-900 mb-3">מה להוריד מהמוצר?</h4>
               <div className="space-y-2">
                 {removableItems.map((item) => (
                   <label 

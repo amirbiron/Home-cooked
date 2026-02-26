@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { 
-  ChefHat, Star, Users, TrendingUp, ArrowLeft, 
+  Store, Star, Users, TrendingUp, ArrowLeft, 
   Check, Play, Sparkles, Phone, ShoppingCart,
   Clock, MapPin, Heart, Shield, Zap
 } from 'lucide-react';
@@ -25,13 +25,13 @@ export default function Landing() {
 
   const phoneSteps = [
     { 
-      title: 'בחירת מבשל',
-      icon: ChefHat,
+      title: 'בחירת מוכר',
+      icon: Store,
       bg: 'from-orange-400 to-orange-600',
       image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400'
     },
     { 
-      title: 'בחירת מנות',
+      title: 'בחירת מוצרים',
       icon: ShoppingCart,
       bg: 'from-green-400 to-green-600',
       image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'
@@ -69,11 +69,11 @@ export default function Landing() {
           >
             <Badge className="bg-orange-500 text-white mb-4 text-sm px-4 py-2">
               <Sparkles className="w-4 h-4 ml-2" />
-              המהפכה באוכל ביתי
+              המהפכה במוצרים ביתיים
             </Badge>
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-              <span className="text-gray-900">אוכל ביתי</span>
+              <span className="text-gray-900">מוצרים ביתיים</span>
               <br />
               <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
                 ישירות אליכם
@@ -81,8 +81,8 @@ export default function Landing() {
             </h1>
 
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              גלו מאות מבשלים ביתיים מוכשרים באזורכם. 
-              מתכונים משפחתיים, אוכל טרי שמכינים באהבה, 
+              גלו מאות מוכרים ביתיים מוכשרים באזורכם. 
+              מוצרים ביתיים, מכל הלב, 
               והכל במרחק הקלקה.
             </p>
 
@@ -101,8 +101,8 @@ export default function Landing() {
                 onClick={() => navigate(createPageUrl('BecomeACook'))}
                 className="h-14 px-8 text-lg border-2"
               >
-                <ChefHat className="w-5 h-5 ml-2" />
-                הצטרפו כמבשלים
+                <Store className="w-5 h-5 ml-2" />
+                הצטרפו כמוכרים
               </Button>
             </div>
 
@@ -110,11 +110,11 @@ export default function Landing() {
             <div className="flex gap-8">
               <div>
                 <div className="text-3xl font-bold text-orange-600">150+</div>
-                <div className="text-gray-600 text-sm">מבשלים</div>
+                <div className="text-gray-600 text-sm">מוכרים</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-orange-600">2,500+</div>
-                <div className="text-gray-600 text-sm">מנות</div>
+                <div className="text-gray-600 text-sm">מוצרים</div>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="w-6 h-6 fill-amber-400 text-amber-400" />
@@ -165,9 +165,9 @@ export default function Landing() {
                       <div className="px-6 mb-4">
                         <div className="flex items-center gap-2 mb-2">
                           <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
-                            <ChefHat className="w-5 h-5 text-white" />
+                            <Store className="w-5 h-5 text-white" />
                           </div>
-                          <span className="font-bold">מבשלים ביתיים</span>
+                          <span className="font-bold">מוכרים ביתיים</span>
                         </div>
                         <h3 className="text-lg font-bold">{phoneSteps[phoneStep].title}</h3>
                       </div>
@@ -271,7 +271,7 @@ export default function Landing() {
               4 צעדים פשוטים להזמנה
             </h2>
             <p className="text-xl text-gray-400">
-              מחיפוש ועד האוכל בצלחת - הכל במרחק קליק
+              מחיפוש ועד המוצר אצלכם - הכל במרחק קליק
             </p>
           </motion.div>
 
@@ -279,16 +279,16 @@ export default function Landing() {
             {[
               {
                 step: '1',
-                title: 'חפשו מבשל באזורכם',
-                desc: 'סננו לפי עיר, סגנון אוכל והעדפות תזונתיות',
+                title: 'חפשו מוכר באזורכם',
+                desc: 'סננו לפי עיר, קטגוריה והעדפות',
                 image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600',
                 icon: MapPin,
                 color: 'from-blue-500 to-blue-600'
               },
               {
                 step: '2',
-                title: 'בחרו מנות מהתפריט',
-                desc: 'כל מבשל עם תפריט ייחודי ומנת היום מיוחדת',
+                title: 'בחרו מוצרים מהקטלוג',
+                desc: 'כל מוכר עם קטלוג ייחודי ומוצר היום מיוחד',
                 image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600',
                 icon: ShoppingCart,
                 color: 'from-green-500 to-green-600'
@@ -304,7 +304,7 @@ export default function Landing() {
               {
                 step: '4',
                 title: 'עקבו בזמן אמת',
-                desc: 'התקבלה → בהכנה → מוכנה → איסוף',
+                desc: 'התקבלה → בטיפול → נשלחה → נמסרה',
                 image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600',
                 icon: Clock,
                 color: 'from-purple-500 to-purple-600'
@@ -384,7 +384,7 @@ export default function Landing() {
               למה לבחור בנו?
             </h2>
             <p className="text-xl text-gray-600">
-              החוויה המושלמת של אוכל ביתי
+              החוויה המושלמת של מוצרים ביתיים
             </p>
           </motion.div>
 
@@ -392,8 +392,8 @@ export default function Landing() {
             {[
               {
                 icon: Shield,
-                title: 'מבשלים מאומתים',
-                desc: 'כל מבשל עובר אימות וביקורת איכות לפני ההצטרפות',
+                title: 'מוכרים מאומתים',
+                desc: 'כל מוכר עובר אימות ואימות לפני ההצטרפות',
                 color: 'from-blue-400 to-blue-600'
               },
               {
@@ -404,14 +404,14 @@ export default function Landing() {
               },
               {
                 icon: Heart,
-                title: 'אוכל באהבה',
-                desc: 'כל מנה מוכנת עם אהבה ותשומת לב אישית',
+                title: 'מוצרים באהבה',
+                desc: 'כל מוצר מוכן באהבה ותשומת לב',
                 color: 'from-pink-400 to-pink-600'
               },
               {
                 icon: MapPin,
                 title: 'מקומי ותומך',
-                desc: 'תמכו במבשלים מקומיים באזורכם',
+                desc: 'תמכו במוכרים מקומיים באזורכם',
                 color: 'from-green-400 to-green-600'
               },
               {
@@ -469,13 +469,13 @@ export default function Landing() {
               {
                 name: 'דני כהן',
                 role: 'לקוח מרוצה',
-                text: 'הקוסקוס של שרה הוא הכי טוב שאכלתי! בדיוק כמו של סבתא. המערכת קלה ונוחה והאוכל תמיד חם וטרי.',
+                text: 'המוצרים של שרה פשוט מדהימים! בדיוק כמו של סבתא. המערכת קלה ונוחה והמוצרים תמיד באיכות מעולה.',
                 rating: 5,
                 image: 'https://ui-avatars.com/api/?name=Danny+Cohen&background=F97316&color=fff'
               },
               {
                 name: 'מיכל לוי',
-                role: 'מבשלת ביתית',
+                role: 'מוכרת ביתית',
                 text: 'הצטרפתי לפני 3 חודשים וזה שינה לי את החיים! קיבלתי כבר מעל 50 הזמנות ואני אוהבת כל רגע.',
                 rating: 5,
                 image: 'https://ui-avatars.com/api/?name=Michal+Levi&background=F97316&color=fff'
@@ -483,7 +483,7 @@ export default function Landing() {
               {
                 name: 'יוסי אברהם',
                 role: 'לקוח קבוע',
-                text: 'אני מזמין כל שבוע ממבשלים שונים. האיכות מדהימה והמחירים הוגנים. ממש כמו לאכול אצל אמא.',
+                text: 'אני מזמין כל שבוע ממוכרים שונים. האיכות מדהימה והמחירים הוגנים. ממש כמו לקנות מהשכנים.',
                 rating: 5,
                 image: 'https://ui-avatars.com/api/?name=Yossi+Abraham&background=F97316&color=fff'
               }
@@ -532,7 +532,7 @@ export default function Landing() {
               מוכנים להתחיל?
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              הצטרפו לאלפי לקוחות מרוצים שכבר נהנים מאוכל ביתי איכותי
+              הצטרפו לאלפי לקוחות מרוצים שכבר נהנים ממוצרים ביתיים איכותי
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button 
@@ -549,8 +549,8 @@ export default function Landing() {
                 onClick={() => navigate(createPageUrl('BecomeACook'))}
                 className="border-2 border-white text-white hover:bg-white/10 h-14 px-8 text-lg"
               >
-                <ChefHat className="w-5 h-5 ml-2" />
-                הצטרפו כמבשלים
+                <Store className="w-5 h-5 ml-2" />
+                הצטרפו כמוכרים
               </Button>
             </div>
           </motion.div>
@@ -562,15 +562,15 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
-              <ChefHat className="w-6 h-6 text-white" />
+              <Store className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold">מבשלים ביתיים</span>
+            <span className="text-xl font-bold">מוכרים ביתיים</span>
           </div>
           <p className="text-gray-400 mb-6">
-            המקום שבו אוכל ביתי אמיתי פוגש טכנולוגיה מתקדמת
+            המקום שבו מוצרים ביתיים פוגשים טכנולוגיה מתקדמת
           </p>
           <div className="text-sm text-gray-500">
-            © 2024 מבשלים ביתיים. כל הזכויות שמורות.
+            © 2024 מוכרים ביתיים. כל הזכויות שמורות.
           </div>
         </div>
       </footer>

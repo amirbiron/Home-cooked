@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { 
+import {
   ShoppingBag, Search, Filter, Calendar, Clock,
-  ChefHat, Package, CheckCircle2, XCircle
+  ChefHat, Package, CheckCircle2, XCircle, Truck,
+  MapPin, Percent
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,10 +32,13 @@ import {
 const statusConfig = {
   received: { label: 'התקבלה', color: 'bg-blue-100 text-blue-700', icon: Clock },
   preparing: { label: 'בהכנה', color: 'bg-orange-100 text-orange-700', icon: ChefHat },
-  ready: { label: 'מוכנה', color: 'bg-green-100 text-green-700', icon: Package },
+  ready: { label: 'נשלחה', color: 'bg-green-100 text-green-700', icon: Truck },
   delivered: { label: 'נמסרה', color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
   canceled: { label: 'בוטלה', color: 'bg-red-100 text-red-700', icon: XCircle },
 };
+
+// אחוז עמלת פלטפורמה
+const COMMISSION_RATE = 0.05;
 
 export default function AdminOrders() {
   const navigate = useNavigate();
@@ -97,6 +101,14 @@ export default function AdminOrders() {
   const totalRevenue = filteredOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
   const avgOrderValue = filteredOrders.length > 0 ? totalRevenue / filteredOrders.length : 0;
 
+  // חישוב סה"כ עמלות מההזמנות המסוננות
+  const totalCommissions = filteredOrders.reduce((sum, o) => {
+    const commission = o.commission_amount != null
+      ? o.commission_amount
+      : Math.round((o.total_amount || 0) * COMMISSION_RATE * 100) / 100;
+    return sum + commission;
+  }, 0);
+
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -115,8 +127,8 @@ export default function AdminOrders() {
         </h1>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      {/* סטטיסטיקות */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold">{filteredOrders.length}</p>
@@ -135,6 +147,15 @@ export default function AdminOrders() {
             <p className="text-sm text-gray-500">ממוצע להזמנה</p>
           </CardContent>
         </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <Percent className="w-4 h-4 text-yellow-600" />
+            </div>
+            <p className="text-2xl font-bold text-yellow-600">₪{totalCommissions.toFixed(0)}</p>
+            <p className="text-sm text-gray-500">עמלות (5%)</p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
@@ -142,7 +163,7 @@ export default function AdminOrders() {
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="חיפוש לפי שם, מבשל או מספר הזמנה..."
+            placeholder="חיפוש לפי שם, מוכר או מספר הזמנה..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pr-10"
@@ -156,7 +177,7 @@ export default function AdminOrders() {
             <SelectItem value="all">כל הסטטוסים</SelectItem>
             <SelectItem value="received">התקבלה</SelectItem>
             <SelectItem value="preparing">בהכנה</SelectItem>
-            <SelectItem value="ready">מוכנה</SelectItem>
+            <SelectItem value="ready">נשלחה</SelectItem>
             <SelectItem value="delivered">נמסרה</SelectItem>
             <SelectItem value="canceled">בוטלה</SelectItem>
           </SelectContent>
@@ -182,8 +203,10 @@ export default function AdminOrders() {
               <TableRow>
                 <TableHead>מספר</TableHead>
                 <TableHead>לקוח</TableHead>
-                <TableHead>מבשל</TableHead>
+                <TableHead>מוכר</TableHead>
+                <TableHead>כתובת משלוח</TableHead>
                 <TableHead>סכום</TableHead>
+                <TableHead>עמלה</TableHead>
                 <TableHead>סטטוס</TableHead>
                 <TableHead>תשלום</TableHead>
                 <TableHead>תאריך</TableHead>
@@ -206,7 +229,27 @@ export default function AdminOrders() {
                       </div>
                     </TableCell>
                     <TableCell>{order.cook_name}</TableCell>
+                    <TableCell className="text-xs text-gray-600 max-w-[150px]">
+                      {order.shipping_address ? (
+                        <div className="flex items-start gap-1">
+                          <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0 text-gray-400" />
+                          <span>
+                            {order.shipping_address.street && `${order.shipping_address.street}`}
+                            {order.shipping_address.city && `, ${order.shipping_address.city}`}
+                            {order.shipping_address.floor && ` קומה ${order.shipping_address.floor}`}
+                            {order.shipping_address.apartment && ` דירה ${order.shipping_address.apartment}`}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-300">-</span>
+                      )}
+                    </TableCell>
                     <TableCell className="font-bold">₪{order.total_amount}</TableCell>
+                    <TableCell className="text-sm text-yellow-600">
+                      ₪{order.commission_amount != null
+                        ? order.commission_amount
+                        : Math.round((order.total_amount || 0) * COMMISSION_RATE * 100) / 100}
+                    </TableCell>
                     <TableCell>
                       <Badge className={`${status?.color} gap-1`}>
                         <StatusIcon className="w-3 h-3" />

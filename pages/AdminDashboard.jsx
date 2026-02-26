@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  Users, ChefHat, ShoppingBag, TrendingUp, 
-  ArrowLeft, Bell, MessageCircle, UserCheck, UserX
+import {
+  Users, Store, ShoppingBag, TrendingUp,
+  ArrowLeft, Bell, MessageCircle, UserCheck, UserX,
+  Percent
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,6 +31,22 @@ export default function AdminDashboard() {
   const todayOrders = orders.filter(o => new Date(o.created_date).toDateString() === today);
   const todayRevenue = todayOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
 
+  // חישוב סה"כ עמלות - 5% מכל הזמנה
+  const COMMISSION_RATE = 0.05;
+  const totalCommissions = orders.reduce((sum, o) => {
+    // אם יש שדה עמלה שמור בהזמנה - נשתמש בו, אחרת נחשב 5%
+    const commission = o.commission_amount != null
+      ? o.commission_amount
+      : Math.round((o.total_amount || 0) * COMMISSION_RATE * 100) / 100;
+    return sum + commission;
+  }, 0);
+  const todayCommissions = todayOrders.reduce((sum, o) => {
+    const commission = o.commission_amount != null
+      ? o.commission_amount
+      : Math.round((o.total_amount || 0) * COMMISSION_RATE * 100) / 100;
+    return sum + commission;
+  }, 0);
+
   const cookUsers = users.filter(u => u.user_type === 'cook');
   const regularUsers = users.filter(u => !u.user_type || u.user_type === 'customer');
   const approvedCooks = cooks.filter(c => c.approval_status === 'approved');
@@ -37,9 +54,10 @@ export default function AdminDashboard() {
   const openTickets = tickets.filter(t => t.status === 'open');
 
   const stats = [
-    { title: 'סה״כ משתמשים', value: users.length, sub: `${regularUsers.length} לקוחות · ${cookUsers.length} מבשלים`, icon: Users, color: 'bg-blue-100 text-blue-600', link: 'AdminUsers' },
-    { title: 'מסעדות', value: cooks.length, sub: `${approvedCooks.length} מאושרות · ${openCooks.length} פתוחות`, icon: ChefHat, color: 'bg-orange-100 text-orange-600', link: 'AdminCooks' },
+    { title: 'סה״כ משתמשים', value: users.length, sub: `${regularUsers.length} לקוחות · ${cookUsers.length} מוכרים`, icon: Users, color: 'bg-blue-100 text-blue-600', link: 'AdminUsers' },
+    { title: 'חנויות', value: cooks.length, sub: `${approvedCooks.length} מאושרות · ${openCooks.length} פתוחות`, icon: Store, color: 'bg-orange-100 text-orange-600', link: 'AdminCooks' },
     { title: 'הזמנות היום', value: todayOrders.length, sub: `₪${todayRevenue} הכנסות`, icon: ShoppingBag, color: 'bg-green-100 text-green-600', link: 'AdminOrders' },
+    { title: 'עמלות (5%)', value: `₪${totalCommissions.toFixed(0)}`, sub: `₪${todayCommissions.toFixed(0)} היום`, icon: Percent, color: 'bg-yellow-100 text-yellow-600', link: 'AdminOrders' },
     { title: 'פניות תמיכה', value: tickets.length, sub: `${openTickets.length} פתוחות`, icon: MessageCircle, color: openTickets.length > 0 ? 'bg-red-100 text-red-600' : 'bg-purple-100 text-purple-600', link: 'AdminSupport' },
   ];
 
@@ -56,7 +74,7 @@ export default function AdminDashboard() {
                 <Bell className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="font-bold text-orange-900">{pendingCooks.length} מבשלים ממתינים לאישור</p>
+                <p className="font-bold text-orange-900">{pendingCooks.length} מוכרים ממתינים לאישור</p>
                 <p className="text-sm text-orange-700">יש לאשר או לדחות את הבקשות</p>
               </div>
             </div>
@@ -84,7 +102,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {stats.map((stat) => (
           <Link key={stat.title} to={createPageUrl(stat.link)}>
             <Card className="hover:shadow-lg transition-all cursor-pointer h-full">
@@ -115,15 +133,15 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center justify-between p-3 bg-orange-50 rounded-xl">
               <div className="flex items-center gap-2">
-                <ChefHat className="w-4 h-4 text-orange-600" />
-                <span className="font-medium text-orange-900">מבשלים</span>
+                <Store className="w-4 h-4 text-orange-600" />
+                <span className="font-medium text-orange-900">מוכרים</span>
               </div>
               <Badge className="bg-orange-500 text-white">{cookUsers.length}</Badge>
             </div>
             <div className="flex items-center justify-between p-3 bg-green-50 rounded-xl">
               <div className="flex items-center gap-2">
                 <UserCheck className="w-4 h-4 text-green-600" />
-                <span className="font-medium text-green-900">מבשלים מאושרים</span>
+                <span className="font-medium text-green-900">מוכרים מאושרים</span>
               </div>
               <Badge className="bg-green-500 text-white">{approvedCooks.length}</Badge>
             </div>

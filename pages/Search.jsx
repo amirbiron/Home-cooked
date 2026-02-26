@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Search as SearchIcon, ChefHat } from 'lucide-react';
+import { Search as SearchIcon, Store } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import CookCard from '../components/search/CookCard';
 import SearchFilters from '../components/search/SearchFilters';
@@ -70,7 +70,7 @@ export default function Search() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Search Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-4">חיפוש מבשלים</h1>
+        <h1 className="text-3xl font-bold mb-4">חיפוש מוכרים</h1>
         <div className="relative max-w-xl">
           <SearchIcon className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
@@ -97,7 +97,7 @@ export default function Search() {
         <div className="md:col-span-3">
           <div className="flex items-center justify-between mb-4">
             <p className="text-gray-600">
-              {isLoading ? 'טוען...' : `נמצאו ${filteredCooks.length} מבשלים`}
+              {isLoading ? 'טוען...' : `נמצאו ${filteredCooks.length} מוכרים`}
             </p>
           </div>
 
@@ -119,8 +119,8 @@ export default function Search() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">לא נמצאו מבשלים</h3>
+              <Store className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">לא נמצאו מוכרים</h3>
               <p className="text-gray-500">נסו לשנות את הסינון או לחפש משהו אחר</p>
             </div>
           )}

@@ -66,7 +66,7 @@ export default function AdminUsers() {
   const getUserTypeBadge = (userType) => {
     switch (userType) {
       case 'cook':
-        return <Badge className="bg-orange-100 text-orange-700">מבשל</Badge>;
+        return <Badge className="bg-orange-100 text-orange-700">מוכר</Badge>;
       case 'admin':
         return <Badge className="bg-purple-100 text-purple-700">מנהל</Badge>;
       default:

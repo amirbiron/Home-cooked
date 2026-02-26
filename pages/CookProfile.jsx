@@ -3,15 +3,23 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
-  Star, Clock, MapPin, Phone, ChefHat, 
-  ShoppingCart, Sparkles, ArrowLeft
+import {
+  Star, Clock, MapPin, Phone, Store,
+  ShoppingCart, Sparkles, ArrowLeft, Instagram,
+  Share2, Check, Copy
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import DishCard from '../components/cook/DishCard';
+
+// חילוץ מזהה פוסט מקישור אינסטגרם
+function extractInstagramPostId(url) {
+  if (!url) return null;
+  const match = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+  return match ? match[1] : null;
+}
 
 export default function CookProfile() {
   const location = useLocation();
@@ -22,6 +30,17 @@ export default function CookProfile() {
 
   const [cart, setCart] = useState({ items: [] });
   const [user, setUser] = useState(null);
+  // מצב לכפתור שיתוף לינק חנות
+  const [storeLinkCopied, setStoreLinkCopied] = useState(false);
+
+  // העתקת לינק החנות ללוח
+  const copyStoreLink = () => {
+    const link = `${window.location.origin}/store/${cookId}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setStoreLinkCopied(true);
+      setTimeout(() => setStoreLinkCopied(false), 2000);
+    });
+  };
 
   useEffect(() => {
     loadUser();
@@ -67,7 +86,7 @@ export default function CookProfile() {
 
   const categories = ['main', 'appetizer', 'side', 'dessert', 'drink', 'other'];
   const categoryLabels = {
-    main: 'מנות עיקריות',
+    main: 'מוצרים עיקריים',
     appetizer: 'ראשונות',
     side: 'תוספות',
     dessert: 'קינוחים',
@@ -194,8 +213,8 @@ export default function CookProfile() {
   if (!cook) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold mb-2">מבשל לא נמצא</h2>
+        <Store className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold mb-2">מוכר לא נמצא</h2>
         <Button onClick={() => navigate(createPageUrl('Search'))}>
           חזרה לחיפוש
         </Button>
@@ -269,12 +288,55 @@ export default function CookProfile() {
           </p>
         )}
 
+        {/* כפתור שיתוף לינק החנות */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={copyStoreLink}
+          className="mb-4"
+        >
+          {storeLinkCopied ? (
+            <>
+              <Check className="w-4 h-4 ml-2 text-green-500" />
+              הלינק הועתק!
+            </>
+          ) : (
+            <>
+              <Share2 className="w-4 h-4 ml-2" />
+              שיתוף לינק חנות
+            </>
+          )}
+        </Button>
+
+        {/* הטמעת אינסטגרם של המוכר */}
+        {cook.instagram_url && extractInstagramPostId(cook.instagram_url) && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Instagram className="w-5 h-5 text-pink-500" />
+              <h3 className="font-bold text-lg">אינסטגרם</h3>
+            </div>
+            <div className="rounded-2xl overflow-hidden border border-gray-200">
+              <iframe
+                src={`https://www.instagram.com/p/${extractInstagramPostId(cook.instagram_url)}/embed`}
+                width="100%"
+                height="500"
+                frameBorder="0"
+                scrolling="no"
+                allowTransparency="true"
+                allow="encrypted-media"
+                title="פוסט אינסטגרם"
+                className="w-full"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Daily Special */}
         {dailySpecial && (
           <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4 mb-6 border border-amber-200">
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="w-5 h-5 text-amber-500" />
-              <h3 className="font-bold text-lg">מנת היום</h3>
+              <h3 className="font-bold text-lg">מוצר היום</h3>
             </div>
             <DishCard 
               dish={dailySpecial}
@@ -289,7 +351,7 @@ export default function CookProfile() {
 
       {/* Menu */}
       <div className="px-4">
-        <h2 className="text-xl font-bold mb-4">התפריט</h2>
+        <h2 className="text-xl font-bold mb-4">הקטלוג</h2>
         
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="w-full flex overflow-x-auto mb-6 bg-gray-100 p-1 rounded-xl">
