@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { createPageUrl } from '../utils';
+import { createPageUrl, extractInstagramPostId } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -13,13 +13,6 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import DishCard from '../components/cook/DishCard';
-
-// חילוץ מזהה פוסט מקישור אינסטגרם
-function extractInstagramPostId(url) {
-  if (!url) return null;
-  const match = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
-  return match ? match[1] : null;
-}
 
 export default function CookProfile() {
   const location = useLocation();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
-import { createPageUrl } from '../utils';
+import { createPageUrl, extractInstagramPostId } from '../utils';
 import { useQuery } from '@tanstack/react-query';
 import {
   ShoppingCart, MapPin, Phone, User,
@@ -14,13 +14,6 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/components/ui/use-toast';
-
-// חילוץ מזהה פוסט מקישור אינסטגרם
-function extractInstagramPostId(url) {
-  if (!url) return null;
-  const match = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
-  return match ? match[1] : null;
-}
 
 export default function BuyProduct() {
   const { productId } = useParams();
@@ -74,7 +67,11 @@ export default function BuyProduct() {
 
     setIsSubmitting(true);
     try {
+      const orderNumber = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+      const commissionAmount = Math.round(dish.price * 0.05 * 100) / 100;
+
       const orderData = {
+        order_number: orderNumber,
         customer_name: formData.customer_name,
         customer_phone: formData.customer_phone,
         cook_id: cook.id,
@@ -89,7 +86,7 @@ export default function BuyProduct() {
         total_amount: dish.price + SHIPPING_COST,
         products_total: dish.price,
         shipping_cost: SHIPPING_COST,
-        commission_amount: dish.price * 0.05,
+        commission_amount: commissionAmount,
         shipping_address: {
           street: formData.shipping_street,
           city: formData.shipping_city,
@@ -118,10 +115,14 @@ export default function BuyProduct() {
 
       const order = await base44.entities.Order.create(orderData);
 
-      // עדכון מספר הזמנות של המוכר
-      await base44.entities.Cook.update(cook.id, {
-        total_orders: (cook.total_orders || 0) + 1
-      });
+      // עדכון מספר הזמנות של המוכר - לא קריטי, לא חוסם את ההזמנה
+      try {
+        await base44.entities.Cook.update(cook.id, {
+          total_orders: (cook.total_orders || 0) + 1
+        });
+      } catch (e) {
+        console.error('שגיאה בעדכון מונה הזמנות:', e);
+      }
 
       toast({
         title: 'ההזמנה נשלחה בהצלחה!',
