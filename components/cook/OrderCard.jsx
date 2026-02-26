@@ -1,7 +1,8 @@
 import React from 'react';
-import { 
+import {
   Clock, ChefHat, Package, CheckCircle2, XCircle,
-  Phone, User, FileText, Banknote, Smartphone
+  Phone, User, FileText, Banknote, Smartphone,
+  MapPin, Truck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -19,21 +20,21 @@ const statusConfig = {
     color: 'bg-blue-100 text-blue-700 border-blue-200', 
     icon: Clock,
     nextStatus: 'preparing',
-    nextLabel: '👨‍🍳 התחל הכנה'
+    nextLabel: '📦 התחל טיפול'
   },
-  preparing: { 
-    label: 'בהכנה', 
-    color: 'bg-orange-100 text-orange-700 border-orange-200', 
+  preparing: {
+    label: 'בטיפול',
+    color: 'bg-orange-100 text-orange-700 border-orange-200',
     icon: ChefHat,
     nextStatus: 'ready',
-    nextLabel: '✅ מוכנה לאיסוף'
+    nextLabel: '🚚 נשלחה'
   },
-  ready: { 
-    label: 'מוכנה', 
-    color: 'bg-green-100 text-green-700 border-green-200', 
+  ready: {
+    label: 'נשלחה',
+    color: 'bg-green-100 text-green-700 border-green-200',
     icon: Package,
     nextStatus: 'delivered',
-    nextLabel: '📦 נמסרה ללקוח'
+    nextLabel: '✅ נמסרה ללקוח'
   },
   delivered: { 
     label: 'נמסרה', 
@@ -96,7 +97,28 @@ export default function OrderCard({ order, onStatusChange, onPaymentChange, expa
           </a>
         </div>
 
-        {/* Items */}
+        {/* כתובת משלוח */}
+        {order.shipping_address && (order.shipping_address.street || order.shipping_address.city) && (
+          <div className="flex items-start gap-2 mb-3 pb-3 border-b bg-orange-50 rounded-lg p-3 text-sm">
+            <MapPin className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium text-orange-900">כתובת למשלוח:</p>
+              <p>
+                {order.shipping_address.street}
+                {order.shipping_address.city && `, ${order.shipping_address.city}`}
+              </p>
+              {(order.shipping_address.floor || order.shipping_address.apartment) && (
+                <p className="text-gray-600">
+                  {order.shipping_address.floor && `קומה ${order.shipping_address.floor}`}
+                  {order.shipping_address.floor && order.shipping_address.apartment && ' · '}
+                  {order.shipping_address.apartment && `דירה ${order.shipping_address.apartment}`}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* פריטי הזמנה */}
         <div className="space-y-1 mb-3">
           {order.items?.map((item, i) => (
             <div key={i} className="flex justify-between text-sm">
@@ -151,7 +173,14 @@ export default function OrderCard({ order, onStatusChange, onPaymentChange, expa
               {order.payment_status === 'paid' ? '✓ שולם' : 'לא שולם'}
             </Badge>
           </div>
-          <span className="text-xl font-bold text-orange-600">₪{order.total_amount}</span>
+          <div className="text-left">
+            <span className="text-xl font-bold text-orange-600">₪{order.total_amount}</span>
+            {order.commission_amount != null && (
+              <p className="text-xs text-gray-400">
+                נטו: ₪{(order.total_amount - order.commission_amount).toFixed(0)}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Status Quick Actions */}
@@ -176,8 +205,8 @@ export default function OrderCard({ order, onStatusChange, onPaymentChange, expa
                     onClick={() => onStatusChange(order.id, 'ready')}
                     className="text-green-600 border-green-300 hover:bg-green-50"
                   >
-                    <Package className="w-4 h-4 ml-1" />
-                    ישר למוכן
+                    <Truck className="w-4 h-4 ml-1" />
+                    ישר לנשלח
                   </Button>
                   <Button
                     variant="outline"

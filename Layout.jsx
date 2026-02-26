@@ -4,8 +4,8 @@ import { createPageUrl } from './utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { 
-        Home, Search, ShoppingCart, User, ChefHat, 
-        LayoutDashboard, UtensilsCrossed, Settings, 
+        Home, Search, ShoppingCart, User, Store,
+        LayoutDashboard, Package, Settings,
         LogOut, Menu, X, Bell, ClipboardList, Users, MessageSquare
       } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -90,7 +90,7 @@ export default function Layout({ children, currentPageName }) {
   const cookLinks = [
     { name: 'דשבורד', icon: LayoutDashboard, page: 'CookDashboard' },
     { name: 'הזמנות', icon: ClipboardList, page: 'CookOrders' },
-    { name: 'תפריט', icon: UtensilsCrossed, page: 'CookMenu' },
+    { name: 'קטלוג', icon: Package, page: 'CookMenu' },
     { name: 'הגדרות', icon: Settings, page: 'CookSettings' },
   ];
 
@@ -98,7 +98,7 @@ export default function Layout({ children, currentPageName }) {
     { name: 'דשבורד', icon: LayoutDashboard, page: 'AdminDashboard' },
         { name: 'אישורים', icon: Bell, page: 'AdminApprovals' },
         { name: 'משתמשים', icon: Users, page: 'AdminUsers' },
-        { name: 'מבשלים', icon: ChefHat, page: 'AdminCooks' },
+        { name: 'מוכרים', icon: Store, page: 'AdminCooks' },
         { name: 'הזמנות', icon: ClipboardList, page: 'AdminOrders' },
         { name: 'תמיכה', icon: MessageSquare, page: 'AdminSupport' },
   ];
@@ -146,10 +146,10 @@ export default function Layout({ children, currentPageName }) {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
-              <ChefHat className="w-6 h-6 text-white" />
+              <Store className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">
-              מבשלים ביתיים
+              מוכרים ביתיים
             </span>
           </Link>
 
@@ -192,7 +192,7 @@ export default function Layout({ children, currentPageName }) {
                   <span>{user.full_name}</span>
                   {userType !== 'customer' && (
                     <Badge variant="outline" className="text-xs">
-                      {userType === 'cook' ? 'מבשל' : 'מנהל'}
+                      {userType === 'cook' ? 'מוכר' : 'מנהל'}
                     </Badge>
                   )}
                 </div>

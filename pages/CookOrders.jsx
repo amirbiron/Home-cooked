@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
-  Package, Bell, ChefHat, CheckCircle2, XCircle, Clock
+import {
+  Package, Bell, ChefHat, CheckCircle2, XCircle, Clock, Truck
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -122,7 +122,7 @@ export default function CookOrders() {
           </TabsTrigger>
           <TabsTrigger value="preparing" className="rounded-lg gap-2 py-3 data-[state=active]:bg-orange-500 data-[state=active]:text-white">
             <ChefHat className="w-4 h-4" />
-            <span className="hidden sm:inline">בהכנה</span>
+            <span className="hidden sm:inline">בטיפול</span>
             {preparingOrders.length > 0 && (
               <Badge className="bg-white text-orange-600 data-[state=active]:bg-orange-600 data-[state=active]:text-white">
                 {preparingOrders.length}
@@ -130,8 +130,8 @@ export default function CookOrders() {
             )}
           </TabsTrigger>
           <TabsTrigger value="ready" className="rounded-lg gap-2 py-3 data-[state=active]:bg-green-500 data-[state=active]:text-white">
-            <Package className="w-4 h-4" />
-            <span className="hidden sm:inline">מוכנות</span>
+            <Truck className="w-4 h-4" />
+            <span className="hidden sm:inline">נשלחו</span>
             {readyOrders.length > 0 && (
               <Badge className="bg-white text-green-600 data-[state=active]:bg-green-600 data-[state=active]:text-white">
                 {readyOrders.length}
@@ -166,7 +166,7 @@ export default function CookOrders() {
           {preparingOrders.length === 0 ? (
             <div className="text-center py-16">
               <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">אין הזמנות בהכנה</p>
+              <p className="text-gray-500">אין הזמנות בטיפול</p>
             </div>
           ) : (
             preparingOrders.map((order) => (
@@ -183,8 +183,8 @@ export default function CookOrders() {
         <TabsContent value="ready" className="space-y-4">
           {readyOrders.length === 0 ? (
             <div className="text-center py-16">
-              <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">אין הזמנות מוכנות</p>
+              <Truck className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-500">אין הזמנות שנשלחו</p>
             </div>
           ) : (
             readyOrders.map((order) => (

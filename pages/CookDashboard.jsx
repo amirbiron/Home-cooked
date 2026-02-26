@@ -4,7 +4,7 @@ import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
-  Power, Clock, Package, ChefHat, TrendingUp, Star,
+  Power, Clock, Package, TrendingUp, Star,
   Bell, Settings, UtensilsCrossed, ArrowLeft, AlertCircle,
   DollarSign, Calendar, Users, Eye, ShoppingBag
 } from 'lucide-react';
@@ -207,11 +207,11 @@ export default function CookDashboard() {
           <CardContent className="p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="w-12 h-12 rounded-xl bg-orange-500 flex items-center justify-center">
-                <ChefHat className="w-6 h-6 text-white" />
+                <Package className="w-6 h-6 text-white" />
               </div>
             </div>
             <p className="text-3xl font-bold text-orange-600 mb-1">{preparingOrders.length}</p>
-            <p className="text-sm text-orange-700 font-medium">בהכנה כרגע</p>
+            <p className="text-sm text-orange-700 font-medium">בטיפול כרגע</p>
           </CardContent>
         </Card>
 
@@ -223,7 +223,7 @@ export default function CookDashboard() {
               </div>
             </div>
             <p className="text-3xl font-bold text-green-600 mb-1">{readyOrders.length}</p>
-            <p className="text-sm text-green-700 font-medium">מוכנות לאיסוף</p>
+            <p className="text-sm text-green-700 font-medium">נשלחו</p>
           </CardContent>
         </Card>
 
@@ -331,7 +331,7 @@ export default function CookDashboard() {
           <CardContent className="p-4 text-center">
             <UtensilsCrossed className="w-8 h-8 text-orange-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-gray-900">{dishes?.length || 0}</p>
-            <p className="text-sm text-gray-500">מנות בתפריט</p>
+            <p className="text-sm text-gray-500">מוצרים בקטלוג</p>
           </CardContent>
         </Card>
 
@@ -409,8 +409,8 @@ export default function CookDashboard() {
                 <UtensilsCrossed className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1">
-                <h3 className="font-bold text-lg text-gray-900">ניהול תפריט</h3>
-                <p className="text-sm text-gray-600">עריכת מנות ומחירים</p>
+                <h3 className="font-bold text-lg text-gray-900">ניהול קטלוג</h3>
+                <p className="text-sm text-gray-600">עריכת מוצרים ומחירים</p>
               </div>
               <ArrowLeft className="w-5 h-5 text-green-500 group-hover:translate-x-1 transition-transform" />
             </CardContent>
@@ -437,7 +437,7 @@ export default function CookDashboard() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>מנת היום</span>
+            <span>מוצר היום</span>
             <Link to={createPageUrl('CookMenu')}>
               <Button variant="ghost" size="sm">
                 ערוך <ArrowLeft className="w-4 h-4 mr-1" />
@@ -471,12 +471,12 @@ export default function CookDashboard() {
           ) : (
             <div className="text-center py-8">
               <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 mb-3">לא הוגדרה מנת היום</p>
+              <p className="text-gray-500 mb-3">לא הוגדרה מוצר היום</p>
               <Button 
                 onClick={() => navigate(createPageUrl('CookMenu'))}
                 variant="outline"
               >
-                הגדר מנת היום
+                הגדר מוצר היום
               </Button>
             </div>
           )}

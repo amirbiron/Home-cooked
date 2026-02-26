@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '../../utils';
-import { Star, Clock, MapPin, ChefHat } from 'lucide-react';
+import { Star, Clock, MapPin, Store } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,7 +10,7 @@ export default function FeaturedCooks({ cooks, isLoading }) {
   if (isLoading) {
     return (
       <section className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8">מבשלים מובילים</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-8">מוכרים מובילים</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
             <Card key={i} className="overflow-hidden">
@@ -29,7 +29,7 @@ export default function FeaturedCooks({ cooks, isLoading }) {
   return (
     <section className="max-w-7xl mx-auto px-4 py-12">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold">מבשלים מובילים</h2>
+        <h2 className="text-2xl md:text-3xl font-bold">מוכרים מובילים</h2>
         <Link 
           to={createPageUrl('Search')}
           className="text-orange-600 hover:text-orange-700 font-medium"

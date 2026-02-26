@@ -11,7 +11,7 @@ export default function DailySpecials({ dishes, cooks, isLoading }) {
     return (
       <section className="bg-gradient-to-r from-orange-500 to-amber-500 py-12">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">מנות היום</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">מוצרי היום</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {[1, 2, 3].map((i) => (
               <Skeleton key={i} className="flex-shrink-0 w-72 h-80 rounded-2xl bg-white/20" />
@@ -26,7 +26,7 @@ export default function DailySpecials({ dishes, cooks, isLoading }) {
 
   const getCookName = (cookId) => {
     const cook = cooks?.find(c => c.id === cookId);
-    return cook?.display_name || 'מבשל';
+    return cook?.display_name || 'מוכר';
   };
 
   return (
@@ -34,7 +34,7 @@ export default function DailySpecials({ dishes, cooks, isLoading }) {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center gap-3 mb-8">
           <Sparkles className="w-8 h-8 text-white" />
-          <h2 className="text-2xl md:text-3xl font-bold text-white">מנות היום</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-white">מוצרי היום</h2>
         </div>
 
         <div className="flex gap-6 overflow-x-auto pb-4 -mx-4 px-4 scrollbar-hide">
@@ -53,7 +53,7 @@ export default function DailySpecials({ dishes, cooks, isLoading }) {
                   />
                   <Badge className="absolute top-3 right-3 bg-amber-500 text-white gap-1">
                     <Sparkles className="w-3 h-3" />
-                    מנת היום
+                    מוצר היום
                   </Badge>
                 </div>
                 

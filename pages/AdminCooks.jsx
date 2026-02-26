@@ -4,7 +4,7 @@ import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
-  ChefHat, Search, Shield, ShieldOff, MapPin, Star, Power
+  Store, Search, Shield, ShieldOff, MapPin, Star, Power
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -77,8 +77,8 @@ export default function AdminCooks() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <ChefHat className="w-6 h-6" />
-          ניהול מבשלים
+          <Store className="w-6 h-6" />
+          ניהול מוכרים
         </h1>
         <div className="relative w-64">
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -96,7 +96,7 @@ export default function AdminCooks() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>מבשל</TableHead>
+                <TableHead>מוכר</TableHead>
                 <TableHead>עיר</TableHead>
                 <TableHead>דירוג</TableHead>
                 <TableHead>הזמנות</TableHead>

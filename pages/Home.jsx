@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import HeroSection from '../components/home/HeroSection';
 import FeaturedCooks from '../components/home/FeaturedCooks';
 import DailySpecials from '../components/home/DailySpecials';
-import { ChefHat, Users, Utensils, Heart, Clock, Loader2 } from 'lucide-react';
+import { Store, Users, Utensils, Heart, Clock, Loader2 } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -139,7 +139,7 @@ export default function Home() {
 
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl md:text-3xl font-bold mb-6">מבשלים לפי סגנון</h2>
+        <h2 className="text-2xl md:text-3xl font-bold mb-6">מוכרים לפי סגנון</h2>
         
         <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
           {categories.map((cat) => (
@@ -166,10 +166,10 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 pb-16">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold">
-            {selectedCategory === 'all' ? 'כל המבשלים' : categories.find(c => c.id === selectedCategory)?.name}
+            {selectedCategory === 'all' ? 'כל המוכרים' : categories.find(c => c.id === selectedCategory)?.name}
           </h3>
           <span className="text-gray-500">
-            {filteredCooks.length} מבשלים
+            {filteredCooks.length} מוכרים
           </span>
         </div>
 
@@ -239,8 +239,8 @@ export default function Home() {
           </div>
         ) : (
           <div className="text-center py-16">
-            <ChefHat className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">לא נמצאו מבשלים בקטגוריה זו</h3>
+            <Store className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-gray-900 mb-2">לא נמצאו מוכרים בקטגוריה זו</h3>
             <p className="text-gray-500">נסו לבחור קטגוריה אחרת</p>
           </div>
         )}
@@ -252,10 +252,10 @@ export default function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {[
-            { icon: Users, title: 'בחרו מבשל', desc: 'גלשו בין המבשלים הביתיים באזורכם' },
-            { icon: Utensils, title: 'בחרו מנות', desc: 'עיינו בתפריט ובמנה המיוחדת של היום' },
-            { icon: ChefHat, title: 'המבשל מכין', desc: 'המבשל מקבל את ההזמנה ומתחיל להכין' },
-            { icon: Heart, title: 'תהנו!', desc: 'קבלו את האוכל הטרי ותהנו מכל ביס' },
+            { icon: Users, title: 'בחרו מוכר', desc: 'גלשו בין המוכרים הביתיים באזורכם' },
+            { icon: Utensils, title: 'בחרו מוצרים', desc: 'עיינו בקטלוג ובמוצר המיוחד של היום' },
+            { icon: Store, title: 'המוכר מטפל', desc: 'המוכר מקבל את ההזמנה ומתחיל לטפל בה' },
+            { icon: Heart, title: 'תהנו!', desc: 'קבלו את המוצרים ותהנו!' },
           ].map((step, i) => (
             <div key={i} className="text-center">
               <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -272,16 +272,16 @@ export default function Home() {
       <section className="bg-gray-900 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            אתם מבשלים מוכשרים?
+            אתם מוכרים מוכשרים?
           </h2>
           <p className="text-gray-400 text-lg mb-8">
-            הצטרפו לקהילת המבשלים הביתיים שלנו והתחילו למכור את המנות שלכם
+            הצטרפו לקהילת המוכרים הביתיים שלנו והתחילו למכור את המוצרים שלכם
           </p>
           <button 
             onClick={() => navigate(createPageUrl('BecomeACook'))}
             className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg transition-colors"
           >
-            הצטרפו כמבשלים
+            הצטרפו כמוכרים
           </button>
         </div>
       </section>

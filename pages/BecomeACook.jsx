@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { 
-  ChefHat, Star, Users, TrendingUp, ArrowLeft,
+  Store, Star, Users, TrendingUp, ArrowLeft,
   CheckCircle2, Phone, MapPin, User, Clock
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -114,9 +114,9 @@ export default function BecomeACook() {
       <div className="max-w-md mx-auto px-4 py-12">
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-orange-100 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-            <ChefHat className="w-8 h-8 text-orange-600" />
+            <Store className="w-8 h-8 text-orange-600" />
           </div>
-          <h1 className="text-2xl font-bold">הרשמה כמבשל/ת</h1>
+          <h1 className="text-2xl font-bold">הרשמה כמוכר/ת</h1>
           <p className="text-gray-600">מלאו את הפרטים כדי להתחיל</p>
         </div>
 
@@ -163,12 +163,12 @@ export default function BecomeACook() {
             </div>
 
             <div>
-              <Label htmlFor="bio">קצת עליכם ועל הבישול</Label>
+              <Label htmlFor="bio">קצת עליכם ועל העסק</Label>
               <Textarea
                 id="bio"
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                placeholder="ספרו על סגנון הבישול שלכם, התמחות מיוחדת..."
+                placeholder="ספרו על סגנון המכירה שלכם, התמחות מיוחדת..."
                 rows={3}
               />
             </div>
@@ -178,7 +178,7 @@ export default function BecomeACook() {
               disabled={!formData.display_name || !formData.city || isSubmitting}
               className="w-full h-12 bg-orange-500 hover:bg-orange-600 mt-4"
             >
-              {isSubmitting ? 'יוצר פרופיל...' : 'צור פרופיל מבשל'}
+              {isSubmitting ? 'יוצר פרופיל...' : 'צור פרופיל מוכר'}
             </Button>
 
             <Button
@@ -201,13 +201,13 @@ export default function BecomeACook() {
       <section className="bg-gradient-to-br from-orange-500 to-amber-500 text-white py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <div className="w-20 h-20 bg-white/20 rounded-3xl mx-auto mb-6 flex items-center justify-center">
-            <ChefHat className="w-10 h-10" />
+            <Store className="w-10 h-10" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             הפכו את התשוקה שלכם לעסק
           </h1>
           <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            הצטרפו לקהילת המבשלים הביתיים שלנו ומכרו את המנות שלכם לאלפי לקוחות
+            הצטרפו לקהילת המוכרים הביתיים שלנו ומכרו את המוצרים שלכם לאלפי לקוחות
           </p>
           <Button
             onClick={() => user ? setStep('form') : base44.auth.redirectToLogin()}
@@ -232,7 +232,7 @@ export default function BecomeACook() {
                 </div>
                 <h3 className="font-bold text-xl mb-2">הכנסה נוספת</h3>
                 <p className="text-gray-600">
-                  הפכו את הבישול שלכם למקור הכנסה, בזמנים שנוחים לכם
+                  הפכו את העסק שלכם למקור הכנסה, בזמנים שנוחים לכם
                 </p>
               </CardContent>
             </Card>
@@ -244,7 +244,7 @@ export default function BecomeACook() {
                 </div>
                 <h3 className="font-bold text-xl mb-2">קהילה תומכת</h3>
                 <p className="text-gray-600">
-                  הצטרפו לקהילת מבשלים מוכשרים עם תמיכה ועזרה הדדית
+                  הצטרפו לקהילת מוכרים מוכשרים עם תמיכה ועזרה הדדית
                 </p>
               </CardContent>
             </Card>
@@ -256,7 +256,7 @@ export default function BecomeACook() {
                 </div>
                 <h3 className="font-bold text-xl mb-2">חשיפה ללקוחות</h3>
                 <p className="text-gray-600">
-                  הגיעו לאלפי לקוחות חדשים שמחפשים אוכל ביתי אמיתי
+                  הגיעו לאלפי לקוחות חדשים שמחפשים מוצרים ביתיים איכותיים
                 </p>
               </CardContent>
             </Card>
@@ -270,10 +270,10 @@ export default function BecomeACook() {
           <h2 className="text-3xl font-bold text-center mb-12">איך זה עובד?</h2>
           <div className="space-y-6">
             {[
-              { num: 1, title: 'הירשמו בחינם', desc: 'צרו פרופיל מבשל תוך דקות ספורות' },
-              { num: 2, title: 'בנו את התפריט', desc: 'הוסיפו את המנות שלכם עם תמונות ותיאורים' },
+              { num: 1, title: 'הירשמו בחינם', desc: 'צרו פרופיל מוכר תוך דקות ספורות' },
+              { num: 2, title: 'בנו את הקטלוג', desc: 'הוסיפו את המוצרים שלכם עם תמונות ותיאורים' },
               { num: 3, title: 'קבלו הזמנות', desc: 'התחילו לקבל הזמנות מלקוחות באזורכם' },
-              { num: 4, title: 'הכינו ומסרו', desc: 'בשלו את המנות והרוויחו מכל הזמנה' },
+              { num: 4, title: 'הכינו ומסרו', desc: 'הכינו את ההזמנות והרוויחו מכל הזמנה' },
             ].map((step) => (
               <div key={step.num} className="flex items-center gap-6 bg-white p-6 rounded-2xl">
                 <div className="w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
@@ -301,7 +301,7 @@ export default function BecomeACook() {
             size="lg"
             className="bg-orange-500 hover:bg-orange-600 h-14 px-8 text-lg"
           >
-            {user ? 'צרו פרופיל מבשל' : 'התחברו והתחילו'}
+            {user ? 'צרו פרופיל מוכר' : 'התחברו והתחילו'}
             <ArrowLeft className="w-5 h-5 mr-2" />
           </Button>
         </div>

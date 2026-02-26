@@ -62,7 +62,7 @@ export default function DishCard({ dish, cartQuantity = 0, onAdd, onRemove, isOp
         {dish.is_daily_special && (
           <div className="absolute top-3 right-3 z-10 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
-            מנת היום
+            מוצר היום
           </div>
         )}
 
@@ -122,7 +122,7 @@ export default function DishCard({ dish, cartQuantity = 0, onAdd, onRemove, isOp
 
           {/* Closed Status */}
           {!isOpen && dish.is_available && (
-            <p className="text-red-400 text-xs mt-2 font-medium">המבשל סגור כרגע</p>
+            <p className="text-red-400 text-xs mt-2 font-medium">המוכר סגור כרגע</p>
           )}
         </div>
       </div>

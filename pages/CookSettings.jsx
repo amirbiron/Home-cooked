@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useMutation } from '@tanstack/react-query';
-import { 
-  User, MapPin, Phone, Clock, Image, Save, Camera, X
+import {
+  User, MapPin, Phone, Clock, Image, Save, Camera, X, Instagram
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,7 +45,8 @@ export default function CookSettings() {
     min_order_amount: 0,
     estimated_prep_time: 30,
     tags: [],
-    open_hours: {}
+    open_hours: {},
+    instagram_url: ''
   });
 
   useEffect(() => {
@@ -74,7 +75,8 @@ export default function CookSettings() {
           min_order_amount: cookData.min_order_amount || 0,
           estimated_prep_time: cookData.estimated_prep_time || 30,
           tags: cookData.tags || [],
-          open_hours: cookData.open_hours || {}
+          open_hours: cookData.open_hours || {},
+          instagram_url: cookData.instagram_url || ''
         });
       }
     } catch (e) {
@@ -238,7 +240,7 @@ export default function CookSettings() {
         <CardContent className="pt-14 pb-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="display_name">שם המבשל/ת</Label>
+              <Label htmlFor="display_name">שם המוכר/ת</Label>
               <Input
                 id="display_name"
                 value={formData.display_name}
@@ -252,7 +254,7 @@ export default function CookSettings() {
                 id="bio"
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                placeholder="ספרו על עצמכם ועל סגנון הבישול שלכם"
+                placeholder="ספרו על עצמכם ועל העסק שלכם"
                 rows={3}
               />
             </div>
@@ -294,8 +296,33 @@ export default function CookSettings() {
               id="address"
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              placeholder="כתובת מלאה לאיסוף"
+              placeholder="כתובת מלאה"
             />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* לינק אינסטגרם */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Instagram className="w-5 h-5" />
+            לינק אינסטגרם
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div>
+            <Label htmlFor="instagram_url">קישור לפוסט או ריל באינסטגרם</Label>
+            <Input
+              id="instagram_url"
+              value={formData.instagram_url}
+              onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+              placeholder="https://www.instagram.com/p/ABC123/"
+              dir="ltr"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              הדביקו קישור לפוסט או ריל מאינסטגרם שיוצג בעמוד הפרופיל שלכם
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -360,7 +387,7 @@ export default function CookSettings() {
             שעות פעילות
           </CardTitle>
           <p className="text-sm text-gray-500 mt-2">
-            הגדרו את שעות הפעילות שלכם. כאשר המסעדה מחוץ לשעות הפעילות, היא תהיה סגורה להזמנות באופן אוטומטי.
+            הגדרו את שעות הפעילות שלכם. כאשר החנות מחוץ לשעות הפעילות, היא תהיה סגורה להזמנות באופן אוטומטי.
           </p>
         </CardHeader>
         <CardContent className="space-y-3">

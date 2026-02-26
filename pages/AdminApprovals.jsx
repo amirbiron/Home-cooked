@@ -4,7 +4,7 @@ import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { 
-  Clock, CheckCircle2, XCircle, ChefHat, MapPin, 
+  Clock, CheckCircle2, XCircle, Store, MapPin, 
   Phone, Mail, AlertCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -117,7 +117,7 @@ export default function AdminApprovals() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Clock className="w-6 h-6" />
-          אישור מבשלים חדשים
+          אישור מוכרים חדשים
         </h1>
         {pendingCooks?.length > 0 && (
           <Badge className="bg-orange-500 text-white text-lg px-4 py-2">
@@ -131,7 +131,7 @@ export default function AdminApprovals() {
           <div className="text-center">
             <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
             <h3 className="text-xl font-bold mb-2">אין בקשות ממתינות</h3>
-            <p className="text-gray-500">כל המבשלים אושרו</p>
+            <p className="text-gray-500">כל המוכרים אושרו</p>
           </div>
         </Card>
       ) : (
@@ -150,7 +150,7 @@ export default function AdminApprovals() {
                         />
                       ) : (
                         <div className="w-full h-full bg-orange-100 flex items-center justify-center">
-                          <ChefHat className="w-6 h-6 text-orange-600" />
+                          <Store className="w-6 h-6 text-orange-600" />
                         </div>
                       )}
                     </div>
@@ -240,17 +240,17 @@ export default function AdminApprovals() {
 
           <SheetHeader className="px-5 py-4">
             <SheetTitle className="text-2xl font-bold text-gray-900 text-right">
-              אישור מבשל חדש
+              אישור מוכר חדש
             </SheetTitle>
           </SheetHeader>
 
           <div className="px-5 py-6 space-y-4">
             <div className="bg-green-50 border-2 border-green-200 p-5 rounded-2xl">
               <p className="text-gray-700 text-base leading-relaxed">
-                האם לאשר את <span className="font-bold text-gray-900">{selectedCook?.display_name}</span> כמבשל במערכת?
+                האם לאשר את <span className="font-bold text-gray-900">{selectedCook?.display_name}</span> כמוכר במערכת?
               </p>
               <p className="text-gray-600 text-sm mt-3">
-                לאחר האישור, המבשל יוכל להתחבר למערכת, להוסיף מנות ולקבל הזמנות.
+                לאחר האישור, המוכר יוכל להתחבר למערכת, להוסיף מוצרים ולקבל הזמנות.
               </p>
             </div>
 
@@ -293,7 +293,7 @@ export default function AdminApprovals() {
               <AlertCircle className="w-6 h-6 text-amber-600 mt-1 flex-shrink-0" />
               <div className="text-sm text-amber-900">
                 <p className="font-bold mb-2 text-base">שימו לב:</p>
-                <p className="leading-relaxed">הסיבה לדחייה תישלח למבשל באימייל. נסחו בצורה ברורה ומכבדת.</p>
+                <p className="leading-relaxed">הסיבה לדחייה תישלח למוכר באימייל. נסחו בצורה ברורה ומכבדת.</p>
               </div>
             </div>
 

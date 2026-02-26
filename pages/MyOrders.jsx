@@ -16,8 +16,8 @@ import toast from 'react-hot-toast';
 
 const statusConfig = {
   received: { label: 'התקבלה', color: 'bg-blue-100 text-blue-700', icon: Clock },
-  preparing: { label: 'בהכנה', color: 'bg-orange-100 text-orange-700', icon: ChefHat },
-  ready: { label: 'מוכנה', color: 'bg-green-100 text-green-700', icon: Package },
+  preparing: { label: 'בטיפול', color: 'bg-orange-100 text-orange-700', icon: ChefHat },
+  ready: { label: 'נשלחה', color: 'bg-green-100 text-green-700', icon: Package },
   delivered: { label: 'נמסרה', color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
   canceled: { label: 'בוטלה', color: 'bg-red-100 text-red-700', icon: XCircle },
 };
@@ -176,12 +176,12 @@ export default function MyOrders() {
         <div className="text-center py-16">
           <ShoppingBag className="w-20 h-20 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-bold mb-2">אין הזמנות עדיין</h2>
-          <p className="text-gray-500 mb-6">הזמינו מהמבשלים המוכשרים שלנו</p>
+          <p className="text-gray-500 mb-6">הזמינו מהמוכרים המוכשרים שלנו</p>
           <Button 
             onClick={() => navigate(createPageUrl('Search'))}
             className="bg-orange-500 hover:bg-orange-600"
           >
-            לחיפוש מבשלים
+            לחיפוש מוכרים
           </Button>
         </div>
       ) : (

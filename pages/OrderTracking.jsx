@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  CheckCircle2, Clock, ChefHat, Package, 
-  XCircle, Phone, MapPin, Timer
+import {
+  CheckCircle2, Clock, ChefHat, Package,
+  XCircle, Phone, MapPin, Timer, Truck, Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,32 +15,32 @@ import moment from 'moment';
 
 const statusConfig = {
   received: {
-    label: 'התקבלה במטבח',
+    label: 'התקבלה',
     icon: CheckCircle2,
     color: 'text-blue-500',
     bgColor: 'bg-blue-50',
-    description: 'ההזמנה הגיעה למבשל ומחכה לאישור'
+    description: 'ההזמנה התקבלה ומחכה לאישור'
   },
   preparing: {
-    label: 'בהכנה במטבח',
+    label: 'בטיפול',
     icon: ChefHat,
     color: 'text-orange-500',
     bgColor: 'bg-orange-50',
-    description: 'המבשל מכין את ההזמנה שלכם כרגע 👨‍🍳'
+    description: 'המוכר מכין את ההזמנה שלכם כרגע 👨‍🍳'
   },
   ready: {
-    label: 'מוכנה לאיסוף',
-    icon: Package,
+    label: 'נשלחה',
+    icon: Truck,
     color: 'text-green-500',
     bgColor: 'bg-green-50',
-    description: 'ההזמנה מוכנה ומחכה לכם! 🎉'
+    description: 'ההזמנה נשלחה ובדרך אליכם!'
   },
   delivered: {
     label: 'נמסרה',
     icon: CheckCircle2,
     color: 'text-green-600',
     bgColor: 'bg-green-50',
-    description: 'ההזמנה נמסרה בהצלחה. בתאבון! 🍽️'
+    description: 'ההזמנה נמסרה בהצלחה. תודה!'
   },
   canceled: {
     label: 'בוטלה',
@@ -238,7 +238,34 @@ export default function OrderTracking() {
         </Card>
       )}
 
-      {/* Order Details */}
+      {/* כתובת משלוח */}
+      {order.shipping_address && (order.shipping_address.street || order.shipping_address.city) && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Home className="w-5 h-5 text-orange-500" />
+              כתובת למשלוח
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-1 text-sm">
+            {order.shipping_address.street && (
+              <p>{order.shipping_address.street}</p>
+            )}
+            {order.shipping_address.city && (
+              <p>{order.shipping_address.city}</p>
+            )}
+            {(order.shipping_address.floor || order.shipping_address.apartment) && (
+              <p>
+                {order.shipping_address.floor && `קומה ${order.shipping_address.floor}`}
+                {order.shipping_address.floor && order.shipping_address.apartment && ' · '}
+                {order.shipping_address.apartment && `דירה ${order.shipping_address.apartment}`}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* פרטי ההזמנה */}
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="text-lg">פרטי ההזמנה</CardTitle>
@@ -253,8 +280,30 @@ export default function OrderTracking() {
               <span>₪{item.price * item.quantity}</span>
             </div>
           ))}
+          {/* פירוט עלויות */}
+          {order.products_total != null && (
+            <div className="py-3 flex justify-between text-sm text-gray-600">
+              <span>סה"כ מוצרים</span>
+              <span>₪{order.products_total}</span>
+            </div>
+          )}
+          {order.shipping_cost != null && (
+            <div className="py-3 flex justify-between text-sm text-gray-600">
+              <span className="flex items-center gap-1">
+                <Truck className="w-4 h-4" />
+                משלוח
+              </span>
+              <span>₪{order.shipping_cost}</span>
+            </div>
+          )}
+          {order.commission_amount != null && (
+            <div className="py-3 flex justify-between text-xs text-gray-400">
+              <span>עמלת פלטפורמה (5%)</span>
+              <span>₪{order.commission_amount}</span>
+            </div>
+          )}
           <div className="py-3 flex justify-between font-bold text-lg">
-            <span>סה"כ</span>
+            <span>סה"כ לתשלום</span>
             <span className="text-orange-600">₪{order.total_amount}</span>
           </div>
         </CardContent>
@@ -272,7 +321,7 @@ export default function OrderTracking() {
             </p>
           </div>
           <Badge variant={order.payment_status === 'paid' ? 'default' : 'secondary'}>
-            {order.payment_status === 'paid' ? 'שולם' : 'תשלום למבשל'}
+            {order.payment_status === 'paid' ? 'שולם' : 'תשלום למוכר'}
           </Badge>
         </CardContent>
       </Card>
@@ -286,7 +335,7 @@ export default function OrderTracking() {
           <CardContent className="space-y-3">
             {order.customer_note && (
               <div>
-                <p className="text-sm text-gray-500">הערות למנות:</p>
+                <p className="text-sm text-gray-500">הערות להזמנה:</p>
                 <p>{order.customer_note}</p>
               </div>
             )}

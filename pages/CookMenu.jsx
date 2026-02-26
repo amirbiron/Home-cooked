@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
+import {
   Plus, Edit2, Trash2, Sparkles, Eye, EyeOff,
-  Image, X, Save, Star, ChevronDown, ChevronUp
+  Image, X, Save, Star, ChevronDown, ChevronUp, Instagram,
+  Link, Copy, Check
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -36,7 +37,7 @@ import {
 } from '@/components/ui/sheet';
 
 const CATEGORIES = [
-  { value: 'main', label: 'מנה עיקרית' },
+  { value: 'main', label: 'מוצר עיקרי' },
   { value: 'appetizer', label: 'ראשונה' },
   { value: 'side', label: 'תוספת' },
   { value: 'dessert', label: 'קינוח' },
@@ -65,6 +66,7 @@ export default function CookMenu() {
     is_available: true,
     is_daily_special: false,
     daily_special_note: '',
+    instagram_url: '',
     customization_options: {
       removable_items: [],
       extra_toppings: []
@@ -73,6 +75,17 @@ export default function CookMenu() {
   const [newRemovableItem, setNewRemovableItem] = useState('');
   const [newTopping, setNewTopping] = useState({ name: '', price: '' });
   const [showCustomization, setShowCustomization] = useState(false);
+  // מזהה מוצר שהלינק שלו הועתק - לתצוגת אישור
+  const [copiedDishId, setCopiedDishId] = useState(null);
+
+  // העתקת לינק מוצר ייחודי ללוח
+  const copyProductLink = (dishId) => {
+    const link = `${window.location.origin}/buy/${dishId}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopiedDishId(dishId);
+      setTimeout(() => setCopiedDishId(null), 2000);
+    });
+  };
 
   useEffect(() => {
     loadCook();
@@ -157,6 +170,7 @@ export default function CookMenu() {
       is_available: true,
       is_daily_special: false,
       daily_special_note: '',
+      instagram_url: '',
       customization_options: { removable_items: [], extra_toppings: [] }
     });
     setEditingDish(null);
@@ -178,6 +192,7 @@ export default function CookMenu() {
       is_available: dish.is_available !== false,
       is_daily_special: dish.is_daily_special || false,
       daily_special_note: dish.daily_special_note || '',
+      instagram_url: dish.instagram_url || '',
       customization_options: {
         removable_items: dish.customization_options?.removable_items || [],
         extra_toppings: dish.customization_options?.extra_toppings || []
@@ -267,13 +282,13 @@ export default function CookMenu() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">ניהול תפריט</h1>
+        <h1 className="text-2xl font-bold">ניהול קטלוג</h1>
         <Button 
           onClick={() => { resetForm(); setShowDialog(true); }}
           className="bg-orange-500 hover:bg-orange-600"
         >
           <Plus className="w-4 h-4 ml-2" />
-          הוספת מנה
+          הוספת מוצר
         </Button>
       </div>
 
@@ -283,7 +298,7 @@ export default function CookMenu() {
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-amber-500" />
-              מנת היום
+              מוצר היום
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -348,11 +363,25 @@ export default function CookMenu() {
               </div>
 
               <div className="flex items-center gap-2 flex-shrink-0">
+                {/* כפתור העתקת לינק מוצר ייחודי */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => copyProductLink(dish.id)}
+                  title="העתק לינק מוצר"
+                  className="text-blue-500 hover:text-blue-600"
+                >
+                  {copiedDishId === dish.id ? (
+                    <Check className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <Link className="w-4 h-4" />
+                  )}
+                </Button>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => toggleAvailableMutation.mutate({ dishId: dish.id, isAvailable: !dish.is_available })}
-                  title={dish.is_available ? 'הסתר מנה' : 'הצג מנה'}
+                  title={dish.is_available ? 'הסתר מוצר' : 'הצג מוצר'}
                 >
                   {dish.is_available ? (
                     <Eye className="w-4 h-4 text-green-600" />
@@ -363,8 +392,8 @@ export default function CookMenu() {
                 <Button variant="ghost" size="icon" onClick={() => openEditDialog(dish)}>
                   <Edit2 className="w-4 h-4" />
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   size="icon"
                   onClick={() => setDeleteConfirm(dish)}
                   className="text-red-500 hover:text-red-600"
@@ -379,14 +408,14 @@ export default function CookMenu() {
         {(!dishes || dishes.length === 0) && (
           <div className="text-center py-16">
             <Plus className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">התפריט ריק</h3>
-            <p className="text-gray-500 mb-4">התחילו להוסיף מנות לתפריט</p>
+            <h3 className="text-xl font-bold mb-2">הקטלוג ריק</h3>
+            <p className="text-gray-500 mb-4">התחילו להוסיף מוצרים לקטלוג</p>
             <Button 
               onClick={() => { resetForm(); setShowDialog(true); }}
               className="bg-orange-500 hover:bg-orange-600"
             >
               <Plus className="w-4 h-4 ml-2" />
-              הוספת מנה ראשונה
+              הוספת מוצר ראשונה
             </Button>
           </div>
         )}
@@ -402,7 +431,7 @@ export default function CookMenu() {
 
           <SheetHeader className="px-5 py-4 border-b border-gray-100">
             <SheetTitle className="text-2xl font-bold text-gray-900 text-right">
-              {editingDish ? 'עריכת מנה' : 'הוספת מנה חדשה'}
+              {editingDish ? 'עריכת מוצר' : 'הוספת מוצר חדש'}
             </SheetTitle>
           </SheetHeader>
 
@@ -410,7 +439,7 @@ export default function CookMenu() {
             <div className="space-y-6">
               {/* Photo */}
               <div>
-                <Label className="text-base font-bold text-gray-900 block mb-3">תמונת המנה</Label>
+                <Label className="text-base font-bold text-gray-900 block mb-3">תמונת המוצר</Label>
                 {formData.photo_url ? (
                   <div className="relative w-full h-48 rounded-2xl overflow-hidden">
                     <img
@@ -444,7 +473,7 @@ export default function CookMenu() {
 
               {/* Title */}
               <div>
-                <Label htmlFor="title" className="text-base font-bold text-gray-900 block mb-2">שם המנה</Label>
+                <Label htmlFor="title" className="text-base font-bold text-gray-900 block mb-2">שם המוצר</Label>
                 <Input
                   id="title"
                   value={formData.title}
@@ -461,7 +490,7 @@ export default function CookMenu() {
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="ספרו על המנה, הרכיבים והטעם"
+                  placeholder="ספרו על המוצר"
                   rows={3}
                   className="text-base border-2 rounded-xl"
                 />
@@ -543,7 +572,7 @@ export default function CookMenu() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-6 h-6 text-amber-500" />
-                    <Label className="text-base font-bold text-gray-900">מנת היום</Label>
+                    <Label className="text-base font-bold text-gray-900">מוצר היום</Label>
                   </div>
                   <Switch
                     checked={formData.is_daily_special}
@@ -552,7 +581,7 @@ export default function CookMenu() {
                 </div>
                 {formData.is_daily_special && (
                   <div>
-                    <Label htmlFor="specialNote" className="text-sm font-semibold text-gray-700 block mb-2">הערה למנת היום</Label>
+                    <Label htmlFor="specialNote" className="text-sm font-semibold text-gray-700 block mb-2">הערה למוצר היום</Label>
                     <Input
                       id="specialNote"
                       value={formData.daily_special_note}
@@ -562,6 +591,24 @@ export default function CookMenu() {
                     />
                   </div>
                 )}
+              </div>
+
+              {/* לינק אינסטגרם למוצר */}
+              <div>
+                <Label className="text-base font-bold text-gray-900 flex items-center gap-2 mb-2">
+                  <Instagram className="w-5 h-5 text-pink-500" />
+                  לינק אינסטגרם
+                </Label>
+                <Input
+                  value={formData.instagram_url}
+                  onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                  placeholder="https://www.instagram.com/p/ABC123/"
+                  dir="ltr"
+                  className="h-12 text-base border-2 rounded-xl"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  אופציונלי - קישור לפוסט או ריל של המוצר באינסטגרם
+                </p>
               </div>
 
               {/* Customization Options */}
@@ -654,7 +701,7 @@ export default function CookMenu() {
 
               {/* Available */}
               <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                <Label className="text-base font-bold text-gray-900">מנה זמינה</Label>
+                <Label className="text-base font-bold text-gray-900">מוצר זמין</Label>
                 <Switch
                   checked={formData.is_available}
                   onCheckedChange={(checked) => setFormData({ ...formData, is_available: checked })}
@@ -696,7 +743,7 @@ export default function CookMenu() {
 
           <AlertSheetHeader className="px-5 py-4">
             <AlertSheetTitle className="text-2xl font-bold text-gray-900 text-right">
-              מחיקת מנה
+              מחיקת מוצר
             </AlertSheetTitle>
           </AlertSheetHeader>
 

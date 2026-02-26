@@ -35,7 +35,7 @@ export default function CookRejected() {
           <h1 className="text-2xl font-bold mb-4">הבקשה נדחתה</h1>
           
           <p className="text-gray-600 mb-6">
-            לצערנו, הבקשה להצטרפות כמבשל לא אושרה.
+            לצערנו, הבקשה להצטרפות כמוכר לא אושרה.
           </p>
 
           {rejectionReason && (
